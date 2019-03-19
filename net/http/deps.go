@@ -1,4 +1,4 @@
-package gin
+package httpsvr
 
 import (
 	"gitee.com/iuhjui/logger"
