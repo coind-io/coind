@@ -17,6 +17,7 @@ type CmdTree struct {
 
 func NewCmdTree() *CmdTree {
 	tree := new(CmdTree)
+	tree.makeRoot()
 	return tree
 }
 
@@ -57,4 +58,8 @@ func (tree *CmdTree) makeRoot() error {
 func (tree *CmdTree) SetLogger(logger *logger.Logger) {
 	tree.logger = logger
 	return
+}
+
+func (tree *CmdTree) Execute() error {
+	return tree.root.Execute()
 }
