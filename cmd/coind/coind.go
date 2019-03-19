@@ -14,5 +14,4 @@ func main() {
 		log.Printf("%v", err)
 		os.Exit(1)
 	}
-	return
 }

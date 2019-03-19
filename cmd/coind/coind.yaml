@@ -1,0 +1,4 @@
+datadir: ./datadir
+network:
+  http: 0.0.0.0:9233
+seeds: []
