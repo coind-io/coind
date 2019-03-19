@@ -3,21 +3,21 @@ package httpapi
 import (
 	"github.com/coind-io/coind/core/chain"
 	"github.com/coind-io/coind/core/memtx"
-	"github.com/coind-io/coind/net/gin"
+	"github.com/coind-io/coind/net/http"
 )
 
 type Deps struct {
-	ginsvr *gin.GinServer
-	chain  *chain.Chain
-	memtx  *memtx.MemTx
+	httpsvr *httpsvr.HttpServer
+	chain   *chain.Chain
+	memtx   *memtx.MemTx
 }
 
 func NewDeps() *Deps {
 	return new(Deps)
 }
 
-func (deps *Deps) SetGinServer(gs *gin.GinServer) {
-	deps.ginsvr = gs
+func (deps *Deps) SetHttpServer(hs *httpsvr.HttpServer) {
+	deps.httpsvr = hs
 	return
 }
 

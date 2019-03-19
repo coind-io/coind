@@ -1,13 +1,10 @@
 package httpapi
 
 import (
-	_ "encoding/hex"
-	_ "net/http"
-	_ "strconv"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 
-	_ "github.com/coind-io/coind/lib/hash"
 	"github.com/coind-io/coind/lib/tx"
 )
 
@@ -21,7 +18,20 @@ func NewFetchModule(deps *Deps) *FetchModule {
 	return fm
 }
 
-func (fm *FetchModule) Coins(ctx *gin.Context) {
+func (fm *FetchModule) Balance(w http.ResponseWriter, r *http.Request) {
+	owner, err := tx.NewAddressFromWIF(mux.Vars(r)["owner"])
+	if err != nil {
+		NewErrResp(err).Encode(w)
+		return
+	}
+	balance := fm.deps.memtx.FetchBalanceByOwner(owner)
+	NewResp().Put("balance", balance).Encode(w)
+	return
+}
+
+/*
+
+func (fm *FetchModule) Coins(w http.ResponseWriter) {
 	owner, err := tx.NewAddressFromWIF(ctx.Param("owner"))
 	if err != nil {
 		NewErrResp(err).Encode(ctx.Writer)
@@ -37,19 +47,10 @@ func (fm *FetchModule) Coins(ctx *gin.Context) {
 	return
 }
 
-func (fm *FetchModule) Balance(ctx *gin.Context) {
-	owner, err := tx.NewAddressFromWIF(ctx.Param("owner"))
-	if err != nil {
-		NewErrResp(err).Encode(ctx.Writer)
-		return
-	}
-	balance := fm.deps.memtx.FetchBalanceByOwner(owner)
-	resp := NewResp().Put("balance", balance)
-	ctx.JSON(200, resp.dict)
-	return
-}
 
-/*
+
+
+
 func (fm *FetchModule) Blocks(w http.ResponseWriter, r *http.Request) {
 	bs, err := fm.deps.chain.Blocks(0, 0)
 	if err != nil {
